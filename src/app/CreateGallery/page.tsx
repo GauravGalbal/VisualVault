@@ -31,7 +31,7 @@ export default function CreateGallery() {
 
     return (
         <main className=" flex justify-center items-center ">
-            <div
+            { images.length && <div
                 className=" flex h-5 self-center py-2 px-2
                 bg-slate-300 mt-5 "
                 style={{ width: templateWidth, height: templateHeight }}>
@@ -64,7 +64,7 @@ export default function CreateGallery() {
                     </div>
                 </div>
 
-            </div>
+            </div>}
         </main>
     );
 }
