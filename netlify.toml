@@ -10,4 +10,4 @@ NEXT_USE_NETLIFY_EDGE = "true"
 package = "@netlify/plugin-nextjs"
 
 [images]
-  remote_images = ["https://plus.unsplash.com/.*"]
+  remote_images = ["https://plus.unsplash.com/.*", "https://res.cloudinary.com/.*"]

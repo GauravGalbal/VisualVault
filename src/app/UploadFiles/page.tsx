@@ -4,6 +4,7 @@
 import { ImageContext } from "@/context/ImageContext";
 import Link from "next/link";
 import { ChangeEvent, useContext, useState } from "react";
+import cloudinary from "@/utils/CloudinaryConfig";
 
 
 interface template {
@@ -20,6 +21,7 @@ export default function UploadFiles() {
     function handleFiles(e: ChangeEvent<HTMLInputElement>) {
         const files = e.target.files || [];
         const previews: Array<template> = [];
+        let count = 0;
 
         const promises = new Promise<void>((resolve) => {
             for (let i = 0; i < files.length; i++) {
@@ -29,9 +31,12 @@ export default function UploadFiles() {
                 reader.onload = () => {
                     var image = new Image();
                     image.src = reader?.result?.toString() || '';
-                    image.onload = () => {
-                        previews.push({ src: image.src, width: image.width, height: image.height });
-                        resolve();
+                    image.onload = async () => {
+                        const res: string = await uploadImage(image.src) || "";
+                        console.log("res", res);
+                        previews.push({ src: res, width: image.width, height: image.height });
+                        count++;
+                        if(files.length == count)   resolve();
                     }
                 };
                 reader.readAsDataURL(file);
@@ -39,18 +44,33 @@ export default function UploadFiles() {
         });
 
         Promise.all([promises]).then(() => {
-            console.log(previews);
-            setImages(previews);
-            setImagePreviews(previews);
+            if (previews.length == files.length) {
+                setImagePreviews(previews);
+                setImages(previews);
+                console.log(previews);
+            }
         })
     }
 
+    async function uploadImage(src: string) {
+        try {
+            const result = await cloudinary.uploader.upload(src, {
+                upload_preset: 'koqrxekw'
+            });
+            return result.secure_url;
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            return null;
+        }
+    };
+
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-screen flex-col">
             <input
                 type="file"
                 multiple
                 max={5}
+                accept="image/*"
                 onChange={(e) => handleFiles(e)}
             />
             <div className="flex flex-wrap mt-4 gap-4">
