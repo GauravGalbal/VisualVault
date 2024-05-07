@@ -3,6 +3,7 @@
 
 import { ImageContext } from "@/context/ImageContext";
 import SortImages from "@/utils/sortImages";
+import axios from "axios";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 
@@ -27,6 +28,11 @@ export default function CreateGallery() {
         setTemplateWidth(width);
         setTemplateHeight(height);
         console.log(width, height);
+    }
+
+    async function netlify() {
+        const res = await axios.get(`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[0].src}`);
+        console.log(res);
     }
 
     return (
@@ -65,6 +71,7 @@ export default function CreateGallery() {
                 </div>
 
             </div>}
+            <div onClick={() => {netlify()}}>Hello</div>
         </main>
     );
 }

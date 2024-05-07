@@ -8,3 +8,6 @@ NEXT_USE_NETLIFY_EDGE = "true"
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
+
+[images]
+  remote_images = ["https://plus.unsplash.com/.*"]
