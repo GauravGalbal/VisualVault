@@ -16,11 +16,6 @@ const nextConfig = {
             }
         ],
     },
-    reactStrictMode: false,
-    env: {
-        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "dtax2hbct",
-        NEXT_PUBLIC_CLOUDINARY_PRESET_NAME: "koqrxekw"
-    },
     webpack: (config) => {
         config.resolve = {
             ...config.resolve,

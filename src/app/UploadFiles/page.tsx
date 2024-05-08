@@ -55,7 +55,7 @@ export default function UploadFiles() {
     async function uploadImage(src: string) {
         try {
             const result = await cloudinary.uploader.upload(src, {
-                upload_preset: 'koqrxekw'
+                upload_preset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME
             });
             return result.secure_url;
         } catch (error) {
@@ -65,7 +65,7 @@ export default function UploadFiles() {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen flex-col">
+        <div className="flex items-center justify-center min-h-screen flex-col bg-background">
             <input
                 type="file"
                 multiple

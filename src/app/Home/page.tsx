@@ -4,12 +4,12 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <div className="items-center justify-center flex mt-10 max-h-screen flex-col">
+        <div className="items-center justify-center flex min-h-screen flex-col bg-background">
             <text className=" text-5xl">WELCOME</text>
 
             <div className=" mt-10 flex">
                 <Link href={'/UploadFiles'}>
-                    <text>click here...</text>
+                    click here...
                 </Link>
             </div>
             

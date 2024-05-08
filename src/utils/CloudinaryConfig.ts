@@ -4,9 +4,9 @@ import { v2 as cloudinary } from 'cloudinary';
 
 // Set up Cloudinary configuration
 cloudinary.config({
-    cloud_name: 'dtax2hbct',
-    api_key: '744617558413551',
-    api_secret: 'dPGZVBYavdkMLRQKmgZyy86uLEU'
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+    api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET
 });
 
 export default cloudinary;

@@ -2,16 +2,18 @@
 
 
 import { ImageContext } from "@/context/ImageContext";
-import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import Dimensions from "@/utils/TemplateDimensions";
+import Template1 from "@/components/CreateGallery/Template1";
+import TabsLayout from "@/components/TabsLayout";
 
 
 export default function CreateGallery() {
     const { images }: any = useContext(ImageContext)
-    const height = [0.6, 30, 100];
+    const [dimensions, setDimensions] = useState<Array<{ height: number, width: number }>>([])
     const [templateWidth, setTemplateWidth] = useState(0);
     const [templateHeight, setTemplateHeight] = useState(0);
-    const [imagesLoaded, setImagesLoaded] = useState(true);
+    const [selectedTab, setSelectedTab] = useState<any>(0);
 
     useEffect(() => {
         console.log(images)
@@ -20,51 +22,43 @@ export default function CreateGallery() {
         return () => window.removeEventListener('resize', handleResize);
     }, [])
 
+    useEffect(() => {
+        handleDimensions(templateWidth, templateHeight, selectedTab);
+    }, [selectedTab, setSelectedTab])
+
     function handleResize() {
         const width = window.innerWidth * 0.8; // 20% less than screen width
         const height = window.innerHeight * 0.95; // 20% less than screen height
         setTemplateWidth(width);
         setTemplateHeight(height);
-        console.log(width, height);
+        // console.log(width, height)
+        handleDimensions(width, height, selectedTab);
+
+    }
+
+    function handleDimensions(templateWidth: number, templateHeight: number, ind: number) {
+        let tempDimensions = [];
+
+        for (let i = 0; i < Dimensions[ind].length; i++) {
+            const height = Math.floor(templateHeight * Dimensions[ind][i].height);
+            const width = Math.floor(templateWidth * Dimensions[ind][i].width);
+            console.log(height, width);
+            tempDimensions.push({ height, width });
+        }
+        console.log(tempDimensions);
+        setDimensions(tempDimensions);
     }
 
     return (
-        <main className=" flex justify-center items-center ">
-            {images.length && <div
-                className=" flex h-5 self-center py-2 px-2
-                bg-slate-300 mt-5 "
-                style={{ width: templateWidth, height: templateHeight }}>
-
-                <div className=" flex-row h-[100%] w-[100%] flex gap-2">
-                    <div className=" h-[100%] w-[33%] flex flex-col gap-2">
-                        <img src={`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[0].src}&h=${500}`} alt="Image1"
-                            className={` w-[100%] h-[${height[0]}%] bg-template overflow-hidden
-                        transition ease-in-out duration-300 hover:scale-95 ${imagesLoaded ? 'animate-none' : 'animate-pulse'} `} />
-
-                        <img src={`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[1].src}&h=${500}`} alt="Image1"
-                            className={` w-[100%] h-[${100 - height[0]}%] bg-template overflow-hidden
-                        transition ease-in-out duration-300 hover:scale-95 ${imagesLoaded ? 'animate-none' : 'animate-pulse'} `} />
-                    </div>
-
-                    <div className=" h-[100%] w-[30%] flex flex-col gap-2">
-                        <img src={`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[2].src}&h=${500}`} alt="Image1"
-                            className={` w-[100%] h-[${height[1]}%] bg-template overflow-hidden
-                        transition ease-in-out duration-300 hover:scale-95 ${imagesLoaded ? 'animate-none' : 'animate-pulse'} `} />
-
-                        <img src={`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[3].src}&h=${500}`} alt="Image1"
-                            className={` w-[100%] h-[${100 - height[1]}%] bg-template overflow-hidden
-                        transition ease-in-out duration-300 hover:scale-95 ${imagesLoaded ? 'animate-none' : 'animate-pulse'} `} />
-                    </div>
-
-                    <div className=" h-[100%] w-[37%] flex flex-col ">
-                        <img src={`https://netlifygallerycdn.netlify.app/.netlify/images?url=${images[4].src}&h=${500}`} alt="Image1"
-                            className={` w-[100%] h-[${height[2]}%] bg-template overflow-hidden
-                        transition ease-in-out duration-300 hover:scale-95 ${imagesLoaded ? 'animate-none' : 'animate-pulse'} `} />
-                    </div>
-                </div>
-
+        <div className=" flex flex-col min-h-screen bg-background">
+            <div className=" flex justify-center items-center my-2">
+                <TabsLayout selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
             </div>
-            }
-        </main>
+
+            <div className=" flex my-5 justify-center items-center flex-col ">
+                {selectedTab == 0 && <Template1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
+                {selectedTab == 1 && <div>world</div>}
+            </div>
+        </div>
     );
 }

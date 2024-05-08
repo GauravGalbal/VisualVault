@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ImageContextProvider from "@/context/ImageContext";
+import { Providers } from "@/app/providers";
+import ImageDimensionContextProvider from "@/context/ImageDimensionContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +19,15 @@ export default function RootLayout({
 }>) {
     return (
         <ImageContextProvider>
-            <html lang="en">
-                <body className={inter.className}>
-                    <main>{children}</main>
-                </body>
-            </html>
+            <ImageDimensionContextProvider>
+                <html lang="en">
+                    <body className={inter.className}>
+                        <Providers>
+                            {children}
+                        </Providers>
+                    </body>
+                </html>
+            </ImageDimensionContextProvider>
         </ImageContextProvider>
     );
 }
