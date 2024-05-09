@@ -32,8 +32,14 @@ export default function RootLayout({
                                 <div className=" md:min-w-28 md:max-w-28 min-w-20 max-w-20">
                                     <Image src={Logo} alt="Logo" />
                                 </div>
-                                <Link href={"/Home"}>
+                                <Link href={"/Home"} className=" hidden md:block">
                                     <Button variant="bordered" size="lg"
+                                        className=" hover:bg-amber-400 text-white hover:border-black hover:text-blue-800 hover:font-extrabold">
+                                        Home
+                                    </Button>
+                                </Link>
+                                <Link href={"/Home"} className=" md:hidden">
+                                    <Button variant="bordered" size="md"
                                         className=" hover:bg-amber-400 text-white hover:border-black hover:text-blue-800 hover:font-extrabold">
                                         Home
                                     </Button>
