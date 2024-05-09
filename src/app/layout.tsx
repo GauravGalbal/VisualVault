@@ -29,7 +29,7 @@ export default function RootLayout({
                     <body className=" bg-background ">
                         <Providers>
                             <div className=" flex flex-row justify-between md:mx-20 mx-10 my-5 items-center h-28">
-                                <div className=" min-w-28 max-w-28">
+                                <div className=" md:min-w-28 md:max-w-28 min-w-20 max-w-20">
                                     <Image src={Logo} alt="Logo" />
                                 </div>
                                 <Link href={"/Home"}>
