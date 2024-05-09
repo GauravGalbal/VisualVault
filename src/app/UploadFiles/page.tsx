@@ -65,7 +65,7 @@ export default function UploadFiles() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen flex-col bg-background">
+        <div className="flex items-center justify-center flex-col bg-background">
             <input
                 type="file"
                 multiple

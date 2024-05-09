@@ -50,7 +50,7 @@ export default function CreateGallery() {
     }
 
     return (
-        <div className=" flex flex-col min-h-screen bg-background">
+        <div className=" flex flex-col bg-background">
             <div className=" flex justify-center items-center my-2">
                 <TabsLayout selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
             </div>

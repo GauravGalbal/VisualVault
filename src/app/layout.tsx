@@ -5,6 +5,11 @@ import ImageContextProvider from "@/context/ImageContext";
 import { Providers } from "@/app/providers";
 import ImageDimensionContextProvider from "@/context/ImageDimensionContext";
 
+import Logo from '@/assets/images/logo.png'
+import Image from "next/image";
+import { Button } from "@nextui-org/react";
+import Link from "next/link";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,9 +25,20 @@ export default function RootLayout({
     return (
         <ImageContextProvider>
             <ImageDimensionContextProvider>
-                <html lang="en">
-                    <body className={inter.className}>
+                <html lang="en" className=" bg-background ">
+                    <body className=" bg-background ">
                         <Providers>
+                            <div className=" flex flex-row justify-between md:mx-20 mx-10 my-5 items-center h-28">
+                                <div className=" min-w-28 max-w-28">
+                                    <Image src={Logo} alt="Logo" />
+                                </div>
+                                <Link href={"/Home"}>
+                                    <Button variant="bordered" size="lg"
+                                        className=" hover:bg-amber-400 text-white hover:border-black hover:text-blue-800 hover:font-extrabold">
+                                        Home
+                                    </Button>
+                                </Link>
+                            </div>
                             {children}
                         </Providers>
                     </body>
