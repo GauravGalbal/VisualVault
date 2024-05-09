@@ -3,9 +3,12 @@
 
 import { ImageContext } from "@/context/ImageContext";
 import { useContext, useEffect, useState } from "react";
-import Dimensions from "@/utils/TemplateDimensions";
+import { DesktopDimensions, MobileDimensions } from "@/utils/TemplateDimensions";
 import Template1 from "@/components/CreateGallery/Template1";
-import TabsLayout from "@/components/TabsLayout";
+import DesktopTabsLayout from "@/components/DesktopTabsLayout";
+import { Spinner } from "@nextui-org/react";
+import MobileTemplate1 from "@/components/CreateGallery/MobileTemplate1";
+import MobileTabsLayout from "@/components/MobileTabsLayout";
 
 
 export default function CreateGallery() {
@@ -14,11 +17,18 @@ export default function CreateGallery() {
     const [templateWidth, setTemplateWidth] = useState(0);
     const [templateHeight, setTemplateHeight] = useState(0);
     const [selectedTab, setSelectedTab] = useState<any>(0);
+    const [isLoading, setIsloading] = useState(false);
+    const [isMobile, setIsmobile] = useState(false);
 
     useEffect(() => {
-        console.log(images)
+        setIsloading(true);
         handleResize();
         window.addEventListener('resize', handleResize);
+
+        setTimeout(() => {
+            setIsloading(false);
+        }, 5000);
+
         return () => window.removeEventListener('resize', handleResize);
     }, [])
 
@@ -33,32 +43,58 @@ export default function CreateGallery() {
         setTemplateHeight(height);
         // console.log(width, height)
         handleDimensions(width, height, selectedTab);
+        if (width < 610) setIsmobile(true);
+        else setIsmobile(false);
 
     }
 
     function handleDimensions(templateWidth: number, templateHeight: number, ind: number) {
         let tempDimensions = [];
+        let Dimensions: any = []
+        if (isMobile) Dimensions = MobileDimensions;
+        else Dimensions = DesktopDimensions;
 
         for (let i = 0; i < Dimensions[ind].length; i++) {
             const height = Math.floor(templateHeight * Dimensions[ind][i].height);
             const width = Math.floor(templateWidth * Dimensions[ind][i].width);
-            console.log(height, width);
+            // console.log(height, width);
             tempDimensions.push({ height, width });
         }
-        console.log(tempDimensions);
+        // console.log(tempDimensions);
         setDimensions(tempDimensions);
     }
 
     return (
         <div className=" flex flex-col bg-background">
-            <div className=" flex justify-center items-center my-2">
-                <TabsLayout selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+            <div className=" flex justify-center items-center mb-2">
+                {(isMobile) && (<MobileTabsLayout selectedTab={selectedTab} setSelectedTab={setSelectedTab} />)}
+                {(!isMobile) && (<DesktopTabsLayout selectedTab={selectedTab} setSelectedTab={setSelectedTab} />)}
             </div>
 
-            <div className=" flex my-5 justify-center items-center flex-col ">
-                {selectedTab == 0 && <Template1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
-                {selectedTab == 1 && <div>world</div>}
-            </div>
+            {
+                (!isMobile) && (!isLoading) && (
+                    <div className=" flex my-5 justify-center items-center flex-col ">
+                        {selectedTab == 0 && <Template1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
+                        {selectedTab == 1 && <div>Coming Soon...</div>}
+                    </div>
+                )
+            }
+
+            {
+                (isMobile) && (!isLoading) && (
+                    <div className=" flex my-5 justify-center items-center flex-col ">
+                        {selectedTab == 0 && <MobileTemplate1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
+                        {selectedTab == 1 && <div>coming soon...</div>}
+                    </div>
+                )
+            }
+
+            {
+                (isLoading) && (
+                    <Spinner label="Loading..." color="warning" className=" mt-10 " />
+                )
+            }
+
         </div>
     );
 }

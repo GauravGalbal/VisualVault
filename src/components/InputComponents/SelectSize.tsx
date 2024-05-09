@@ -5,33 +5,61 @@ import { Button, Input, Select, SelectItem, useDisclosure } from "@nextui-org/re
 
 
 
-function SizeInput({ w, h, q, setW, setH, setQ }: any) {
+function SizeInput({ w, h, q, setW, setH, setQ, defaultH, defaultW }: any) {
 
     return (
-        <div className=" flex felx-row justify-between w-full">
-            <Input
-                key="width"
-                type="number"
-                color="secondary"
-                label="Width"
-                size="md"
-                className=" max-w-[30%]"
-                labelPlacement="outside"
-                value={w}
-                onValueChange={setW}
-            />
+        <div className=" flex flex-col w-full">
+            <div className=" flex felx-row justify-between w-full my-5">
+                <div className=" flex flex-col md:max-w-[40%] max-w-[45%]">
+                    <Input
+                        key="width"
+                        type="number"
+                        color="secondary"
+                        label="Width"
+                        size="md"
+                        className=" w-full "
+                        labelPlacement="outside"
+                        value={w}
+                        onValueChange={setW}
+                        classNames={{
+                            label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                            inputWrapper: ["text-[#fff]", "bg-[#17525F]"],
+                            input: ["text-[#fff]", "bg-[#17525F]"],
+                        }}
+                    />
 
-            <Input
-                key="Height"
-                type="number"
-                color="secondary"
-                label="Height"
-                size="md"
-                className=" max-w-[30%]"
-                labelPlacement="outside"
-                value={h}
-                onValueChange={setH}
-            />
+                    <Button size="sm" variant="bordered"
+                        className=" text-white self-center mt-3 text-xs"
+                        onPress={() => { setW(defaultW) }}>
+                        use default width
+                    </Button>
+                </div>
+
+                <div className=" flex flex-col md:max-w-[40%] max-w-[45%]">
+                    <Input
+                        key="Height"
+                        type="number"
+                        color="secondary"
+                        label="Height"
+                        size="md"
+                        className=" w-full "
+                        labelPlacement="outside"
+                        value={h}
+                        onValueChange={setH}
+                        classNames={{
+                            label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                            inputWrapper: ["text-[#fff]", "bg-[#17525F]"],
+                            input: ["text-[#fff]", "bg-[#17525F]"],
+                        }}
+                    />
+
+                    <Button size="sm" variant="bordered"
+                        className=" text-white self-center mt-3 text-xs"
+                        onPress={() => { setH(defaultH) }}>
+                        use default height
+                    </Button>
+                </div>
+            </div>
 
             <Input
                 key="Quality"
@@ -39,10 +67,15 @@ function SizeInput({ w, h, q, setW, setH, setQ }: any) {
                 color="secondary"
                 label="Quality"
                 size="md"
-                className=" max-w-[30%]"
+                className=" mt-5 "
                 labelPlacement="outside"
                 value={q}
                 onValueChange={setQ}
+                classNames={{
+                    label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                    input: ["text-[#fff]", "bg-[#17525F]"],
+                    inputWrapper: ["text-[#fff]", "bg-[#17525F]"],
+                }}
             />
 
         </div>

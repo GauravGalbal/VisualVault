@@ -21,7 +21,7 @@ interface formData {
 
 
 
-function ModalLayout({ isOpen, onOpenChange, ind }: any) {
+function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
     const { images, setImages }: any = useContext(ImageContext);
     const { editData, setEditdata } = useContext(ImageDimensionContext);
     const [q, setQ] = useState(75);
@@ -39,11 +39,13 @@ function ModalLayout({ isOpen, onOpenChange, ind }: any) {
         setW(editData[ind].w);
         setFlag(true);
 
-        console.log(editData[ind]);
+        // console.log(editData[ind]);
     }
 
     useEffect(() => {
         setInitialData();
+        // console.log(dimensions);
+        // console.log(images);
     }, [ind])
 
     function handleApply() {
@@ -59,8 +61,8 @@ function ModalLayout({ isOpen, onOpenChange, ind }: any) {
             });
 
             let url = images[ind].src;
-            url = `${images[ind].src.match(/^(.*?)(?:&|$)/)[1]}${(q != 75) ? `&q=${q}` : '&q=75'}${(w != 100) ? `&w=${w}` : ''}${(h != 100) ? `&h=${h}` : ''}${(fit != "") ? `&fit=${fit}` : '&fit=contain'}${(fit == "cover" && position != "") ? `&position=${position}` : ''}`
-            console.log(`${process.env.NEXT_PUBLIC_CDN_URL}=${url}`);
+            url = `${images[ind].src.match(/^(.*?)(?:&|$)/)[1]}${(q>0) ? `&q=${q}` : '&q=75'}${(w != 0) ? `&w=${w}` : ''}${(h != 0) ? `&h=${h}` : ''}${(fit != "") ? `&fit=${fit}` : '&fit=contain'}${(fit == "cover" && position != "") ? `&position=${position}` : ''}`
+            // console.log(`${process.env.NEXT_PUBLIC_CDN_URL}=${url}`);
 
             setImages((previous: any) => {
                 return previous.map((data: any, key: number) => {
@@ -94,8 +96,9 @@ function ModalLayout({ isOpen, onOpenChange, ind }: any) {
                     <>
                         <ModalBody>
                             { (flag) &&
-                                <div className=" flex flex-col w-full px-10 gap-5 ">
-                                    <SizeInput w={w} h={h} q={q} setW={setW} setH={setH} setQ={setQ} />
+                                <div className=" flex flex-col w-full px-5 md:px-10 gap-5 ">
+                                    <SizeInput w={w} h={h} q={q} setW={setW} setH={setH} setQ={setQ} 
+                                        defaultH={dimensions[ind].height} defaultW={dimensions[ind].width} />
                                     <SelectFit fit={fit} setFit={setFit} position={position} setPosition={setPosition} />
                                 </div> }
                         </ModalBody>

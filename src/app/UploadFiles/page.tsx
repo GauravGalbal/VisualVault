@@ -3,8 +3,10 @@
 
 import { ImageContext } from "@/context/ImageContext";
 import Link from "next/link";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import cloudinary from "@/utils/CloudinaryConfig";
+import { Button, Input, Spinner } from "@nextui-org/react";
+import toast, { Toaster } from "react-hot-toast";
 
 
 interface template {
@@ -17,8 +19,17 @@ interface template {
 export default function UploadFiles() {
     const [imagePreviews, setImagePreviews] = useState<Array<template>>([]);
     const { setImages }: any = useContext(ImageContext);
+    const [isLoading, setIsloading] = useState(false);
+    const [len, setLen] = useState(5);
 
     function handleFiles(e: ChangeEvent<HTMLInputElement>) {
+        if(e.target.files?.length != len){
+            toast.error(`allowed no. of files ${len}`);
+            setIsloading(false);
+            return;
+        }
+
+        setIsloading(true)
         const files = e.target.files || [];
         const previews: Array<template> = [];
         let count = 0;
@@ -33,10 +44,10 @@ export default function UploadFiles() {
                     image.src = reader?.result?.toString() || '';
                     image.onload = async () => {
                         const res: string = await uploadImage(image.src) || "";
-                        console.log("res", res);
+                        // console.log("res", res);
                         previews.push({ src: res, width: image.width, height: image.height });
                         count++;
-                        if(files.length == count)   resolve();
+                        if (files.length == count) resolve();
                     }
                 };
                 reader.readAsDataURL(file);
@@ -47,10 +58,11 @@ export default function UploadFiles() {
             if (previews.length == files.length) {
                 setImagePreviews(previews);
                 setImages(previews);
-                console.log(previews);
+                // console.log(previews);
+                setIsloading(false);
             }
         })
-    }
+    };
 
     async function uploadImage(src: string) {
         try {
@@ -64,29 +76,75 @@ export default function UploadFiles() {
         }
     };
 
+    useEffect(() => {
+        const width = window.innerWidth * 0.8;
+        if(width < 610) setLen(6);
+        else    setLen(5);
+    }, [])
+
     return (
         <div className="flex items-center justify-center flex-col bg-background">
-            <input
-                type="file"
-                multiple
-                max={5}
-                accept="image/*"
-                onChange={(e) => handleFiles(e)}
-            />
-            <div className="flex flex-wrap mt-4 gap-4">
-                {imagePreviews.map((preview, index) => (
-                    <img
-                        key={index}
-                        src={preview.src}
-                        alt={`Preview ${index}`}
-                        className="max-h-40 max-w-40"
-                    />
-                ))}
+
+            <div className="flex items-center justify-center w-[80%] md:w-[50%]">
+                <label className="flex flex-col items-center justify-center w-full border-2 border-dashed rounded-lg cursor-pointer bg-gray-800 border-gray-500 hover:border-gray-600 hover:bg-gray-700">
+                    <div className="flex flex-col items-center justify-center my-5">
+                        <svg className="w-8 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                        </svg>
+                        <p className=" text-sm text-gray-400"><span className="font-semibold">Click to upload images</span></p>
+                    </div>
+                    <input id="dropzone-file" type="file" className="hidden" multiple accept="image/*" onChange={(e) => { handleFiles(e) }} />
+                </label>
             </div>
 
-            <Link href={'/CreateGallery'} >
-                <button>next</button>
-            </Link>
-        </div>
+            {
+                (isLoading) && (
+                    <Spinner label="Loading..." color="warning" className=" mt-10 " />
+                )
+            }
+
+
+            {
+                (!isLoading) && (
+                    <div className=" md:flex md:flex-wrap mt-4 gap-4 hidden ">
+                        {imagePreviews.map((preview, index) => (
+                            <img
+                                key={index}
+                                src={preview.src}
+                                alt={`Preview ${index}`}
+                                className=" md:max-h-40 md:max-w-72 self-center md:self-auto"
+                            />
+                        ))}
+                    </div>
+                )
+            }
+
+            {
+                (!isLoading) && (
+                    <div className=" flex flex-col mt-4 gap-4 items-center justify-center md:hidden">
+                        {imagePreviews.map((preview, index) => (
+                            <img
+                                key={index}
+                                src={preview.src}
+                                alt={`Preview ${index}`}
+                                className=" max-h-[10%] max-w-[65%]"
+                            />
+                        ))}
+                    </div>
+                )
+            }
+
+
+            <Button variant="shadow" size="lg"
+                isDisabled={isLoading || (imagePreviews.length==0)}
+                className=" bg-blue-900 shadow-black text-white font-bold tracking-wider border-white border justify-center items-center flex my-10 mx-20">
+                <Link href={"/CreateGallery"} className={` `}>
+                    Click to Continue
+                </Link>
+            </Button>
+
+            <Toaster />
+
+        </div >
     );
 }

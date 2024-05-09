@@ -33,18 +33,18 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
     };
 
     const handleDragStart = (index: number) => {
-        console.log('drag start', index);
+        // console.log('drag start', index);
         setStartind(index);
     };
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>, index: number) => {
         event.preventDefault(); // Prevent default to allow drop
-        console.log('drag over', index);
+        // console.log('drag over', index);
     };
 
     const handleDrop = (event: React.DragEvent<HTMLDivElement>, index: number) => {
         event.preventDefault(); // Prevent default drop behavior
-        console.log('drag end', index);
+        // console.log('drag end', index);
         if (startInd != index) {
             setImages((previousImages: any) => {
                 const newImages = [...previousImages];
@@ -71,11 +71,11 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
             {(images.length != 0) && (dimensions.length != 0) &&
                 <div
                     id="download-png"
-                    className=" flex py-2 px-2 bg-[#000] flex-row mt-3 mb-3 self-center gap-2"
+                    className=" flex py-2 px-2 bg-[#000] flex-row mt-3 mb-3 self-center gap-2 justify-evenly"
                     style={{ width: templateWidth, height: templateHeight }}>
 
                     <div className={` w-[33%] flex gap-2 flex-col`}>
-                        <div className=" h-[40%] items-center justify-center flex rounded-md
+                        <div className=" h-[40%] items-center justify-center flex rounded-md bg-gray-700
                             overflow-hidden transition ease-in-out duration-300 hover:scale-95 ">
                             <img src={`${process.env.NEXT_PUBLIC_CDN_URL}=${images[0].src}`} alt="Image0"
                                 onClick={() => { setInd(0); onOpen(); }}
@@ -85,7 +85,7 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
                                 onDragOver={(e) => { handleDragOver(e, 0) }}
                                 onDrop={(e) => { handleDrop(e, 0) }} />
                         </div>
-                        <div className=" h-[60%] items-center justify-center flex rounded-md
+                        <div className=" h-[60%] items-center justify-center flex rounded-md bg-gray-700
                             overflow-hidden transition ease-in-out duration-300 hover:scale-95 ">
                             <img src={`${process.env.NEXT_PUBLIC_CDN_URL}=${images[1].src}`} alt="Image1"
                                 onClick={() => { setInd(1); onOpen(); }}
@@ -98,7 +98,7 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
                     </div>
 
                     <div className={` w-[30%] flex gap-2 flex-col`}>
-                        <div className=" h-[70%] items-center justify-center flex rounded-md
+                        <div className=" h-[70%] items-center justify-center flex rounded-md bg-gray-700
                             overflow-hidden transition ease-in-out duration-300 hover:scale-95 ">
                             <img src={`${process.env.NEXT_PUBLIC_CDN_URL}=${images[2].src}`} alt="Image2"
                                 onClick={() => { setInd(2); onOpen(); }}
@@ -108,7 +108,7 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
                                 onDragOver={(e) => { handleDragOver(e, 2) }}
                                 onDrop={(e) => { handleDrop(e, 2) }} />
                         </div>
-                        <div className=" h-[30%] items-center justify-center flex rounded-md
+                        <div className=" h-[30%] items-center justify-center flex rounded-md bg-gray-700
                             overflow-hidden transition ease-in-out duration-300 hover:scale-95 ">
                             <img src={`${process.env.NEXT_PUBLIC_CDN_URL}=${images[3].src}`} alt="Image3"
                                 onClick={() => { setInd(3); onOpen(); }}
@@ -121,7 +121,7 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
                     </div>
 
                     <div className={` w-[30%] flex gap-2 flex-col`}>
-                        <div className=" h-[100%] items-center justify-center flex rounded-md
+                        <div className=" h-[100%] items-center justify-center flex rounded-md bg-gray-700
                             overflow-hidden transition ease-in-out duration-300 hover:scale-95 ">
                             <img src={`${process.env.NEXT_PUBLIC_CDN_URL}=${images[4].src}`} alt="Image2"
                                 onClick={() => { setInd(4); onOpen(); }}
@@ -134,9 +134,12 @@ function Template1({ images, dimensions, templateHeight, templateWidth }: any) {
                     </div>
                 </div>}
 
-            <ModalLayout isOpen={isOpen} onOpenChange={onOpenChange} ind={ind} />
+            <ModalLayout isOpen={isOpen} onOpenChange={onOpenChange} ind={ind} dimensions={dimensions} />
 
-            <Button variant="bordered" color="success" radius="sm" onPress={() => { handleDownloadImage(); }}>
+            <Button variant="shadow" size="lg"
+                onPress={handleDownloadImage}
+                isDisabled={images.length == 0}
+                className=" bg-blue-900 shadow-black text-white font-bold tracking-wider border-white border self-end justify-center items-center flex my-10 mx-20">
                 Download
             </Button>
         </>

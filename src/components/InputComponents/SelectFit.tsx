@@ -15,10 +15,13 @@ function SelectFit({ position, fit, setFit, setPosition }: any) {
                 className="max-w-full"
                 color="secondary"
                 classNames={{
-                    popoverContent: " bg-[#000] "
+                    label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                    popoverContent: ["bg-[#000]"],
+                    trigger: ["bg-[#17525F]", "text-[#fff]"],
+                    value: ["text-[#fff]"],
                 }}
                 defaultSelectedKeys={[`${fit}`]}
-                onChange={(e) => { console.log(e.target.value); setFit(e.target.value); }}
+                onChange={(e) => { setFit(e.target.value); }}
             >
                 {["contain", "fill", "cover"].map((fit) => (
                     <SelectItem key={fit} value={fit}>
@@ -30,14 +33,17 @@ function SelectFit({ position, fit, setFit, setPosition }: any) {
             {(fit == "cover") && (
                 <Select
                     labelPlacement={"outside"}
-                    label="Fit"
+                    label="Position"
                     className="max-w-full"
                     color="secondary"
                     classNames={{
-                        popoverContent: " bg-[#000] "
+                        label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                        popoverContent: ["bg-[#000]"],
+                        trigger: ["bg-[#17525F]", "text-[#fff]"],
+                        value: ["text-[#fff]"]
                     }}
                     defaultSelectedKeys={[`${position}`]}
-                    onChange={(e) => { console.log(e.target.value); setPosition(e.target.value); }}
+                    onChange={(e) => { setPosition(e.target.value); }}
                 >
                     {["top", "bottom", "left", "right", "center"].map((position) => (
                         <SelectItem key={position} value={position}>
