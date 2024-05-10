@@ -9,6 +9,7 @@ interface FormData {
     h: number,
     q: number,
     position: string,
+    fm: string
 }
 
 type ContextType = {

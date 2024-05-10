@@ -5,7 +5,7 @@ import { Button, Input, Select, SelectItem, useDisclosure } from "@nextui-org/re
 
 
 
-function SelectFit({ position, fit, setFit, setPosition }: any) {
+function SelectFit({ position, fit, setFit, setPosition, fm, setFm }: any) {
 
     return (
         <div className=" flex flex-col justify-evenly w-full gap-5">
@@ -52,6 +52,27 @@ function SelectFit({ position, fit, setFit, setPosition }: any) {
                     ))}
                 </Select>
             )}
+
+            <Select
+                labelPlacement={"outside"}
+                label="Format"
+                className="max-w-full"
+                color="secondary"
+                classNames={{
+                    label: ["text-[#fff]", "font-medium", "tracking-wider"],
+                    popoverContent: ["bg-[#000]"],
+                    trigger: ["bg-[#17525F]", "text-[#fff]"],
+                    value: ["text-[#fff]"],
+                }}
+                defaultSelectedKeys={[`${fm}`]}
+                onChange={(e) => { setFm(e.target.value); }}
+            >
+                {["avif", "jpg", "png", "webp", "gif"].map((fm) => (
+                    <SelectItem key={fm} value={fm}>
+                        {fm}
+                    </SelectItem>
+                ))}
+            </Select>
 
         </div>
     )

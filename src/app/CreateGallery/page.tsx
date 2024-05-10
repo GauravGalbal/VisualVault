@@ -9,6 +9,8 @@ import DesktopTabsLayout from "@/components/DesktopTabsLayout";
 import { Spinner } from "@nextui-org/react";
 import MobileTemplate1 from "@/components/CreateGallery/MobileTemplate1";
 import MobileTabsLayout from "@/components/MobileTabsLayout";
+import Template2 from "@/components/CreateGallery/Template2";
+import MobileTemplate2 from "@/components/CreateGallery/MobileTemplate2";
 
 
 export default function CreateGallery() {
@@ -21,13 +23,13 @@ export default function CreateGallery() {
     const [isMobile, setIsmobile] = useState(false);
 
     useEffect(() => {
-        setIsloading(true);
+        // setIsloading(true);
         handleResize();
         window.addEventListener('resize', handleResize);
 
-        setTimeout(() => {
-            setIsloading(false);
-        }, 5000);
+        // setTimeout(() => {
+        //     setIsloading(false);
+        // }, 5000);
 
         return () => window.removeEventListener('resize', handleResize);
     }, [])
@@ -75,7 +77,7 @@ export default function CreateGallery() {
                 (!isMobile) && (!isLoading) && (
                     <div className=" flex my-5 justify-center items-center flex-col ">
                         {selectedTab == 0 && <Template1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
-                        {selectedTab == 1 && <div>Coming Soon...</div>}
+                        {selectedTab == 1 && <Template2 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
                     </div>
                 )
             }
@@ -84,7 +86,7 @@ export default function CreateGallery() {
                 (isMobile) && (!isLoading) && (
                     <div className=" flex my-5 justify-center items-center flex-col ">
                         {selectedTab == 0 && <MobileTemplate1 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
-                        {selectedTab == 1 && <div>coming soon...</div>}
+                        {selectedTab == 1 && <MobileTemplate2 images={images} dimensions={dimensions} templateHeight={templateHeight} templateWidth={templateWidth} />}
                     </div>
                 )
             }

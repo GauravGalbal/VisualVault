@@ -23,8 +23,8 @@ export default function UploadFiles() {
     const [len, setLen] = useState(5);
 
     function handleFiles(e: ChangeEvent<HTMLInputElement>) {
-        if(e.target.files?.length != len){
-            toast.error(`allowed no. of files ${len}`);
+        if((len-(imagePreviews.length)) < (e.target.files?.length || len+1)){
+            toast.error(`You can upload a maximum of ${len} images`);
             setIsloading(false);
             return;
         }
@@ -56,10 +56,14 @@ export default function UploadFiles() {
 
         Promise.all([promises]).then(() => {
             if (previews.length == files.length) {
-                setImagePreviews(previews);
-                setImages(previews);
+                setImagePreviews((previous) => { const temp = [...previous, ...previews]; return temp; });
+                setImages((previous:any) => { const temp = [...previous, ...previews]; return temp; });
                 // console.log(previews);
                 setIsloading(false);
+
+                if((len-(previews.length + imagePreviews.length)) > 0){
+                    toast(`Upload ${len-(previews.length + imagePreviews.length)} more images to proceed`)
+                }
             }
         })
     };

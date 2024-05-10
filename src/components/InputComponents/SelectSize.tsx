@@ -20,7 +20,7 @@ function SizeInput({ w, h, q, setW, setH, setQ, defaultH, defaultW }: any) {
                         className=" w-full "
                         labelPlacement="outside"
                         value={w}
-                        onValueChange={setW}
+                        onValueChange={(e) => {setW(e); setQ(75)}}
                         classNames={{
                             label: ["text-[#fff]", "font-medium", "tracking-wider"],
                             inputWrapper: ["text-[#fff]", "bg-[#17525F]"],
@@ -45,7 +45,7 @@ function SizeInput({ w, h, q, setW, setH, setQ, defaultH, defaultW }: any) {
                         className=" w-full "
                         labelPlacement="outside"
                         value={h}
-                        onValueChange={setH}
+                        onValueChange={(e) => {setH(e); setQ(75)}}
                         classNames={{
                             label: ["text-[#fff]", "font-medium", "tracking-wider"],
                             inputWrapper: ["text-[#fff]", "bg-[#17525F]"],

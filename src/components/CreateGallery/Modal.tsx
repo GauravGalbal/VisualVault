@@ -11,14 +11,6 @@ import { ImageContext } from "@/context/ImageContext";
 import { ImageDimensionContext } from "@/context/ImageDimensionContext";
 
 
-interface formData {
-    fit: string,
-    w: number,
-    h: number,
-    q: number,
-    position: string,
-}
-
 
 
 function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
@@ -29,6 +21,7 @@ function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
     const [h, setH] = useState(100);
     const [fit, setFit] = useState("contain");
     const [position, setPosition] = useState("center");
+    const [fm, setFm] = useState("");
     const [flag, setFlag] = useState(false);
 
     function setInitialData() {
@@ -37,6 +30,7 @@ function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
         setPosition(editData[ind].position);
         setFit(editData[ind].fit);
         setW(editData[ind].w);
+        setFm(editData[ind].fm);
         setFlag(true);
 
         // console.log(editData[ind]);
@@ -53,7 +47,7 @@ function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
             setEditdata((previous) => {
                 return previous.map((data, key) => {
                     if (key === ind) {
-                        return { w, h, q, fit, position };
+                        return { w, h, q, fit, position, fm };
                     } else {
                         return data; // Return unchanged data for other elements
                     }
@@ -61,7 +55,11 @@ function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
             });
 
             let url = images[ind].src;
-            url = `${images[ind].src.match(/^(.*?)(?:&|$)/)[1]}${(q>0) ? `&q=${q}` : '&q=75'}${(w != 0) ? `&w=${w}` : ''}${(h != 0) ? `&h=${h}` : ''}${(fit != "") ? `&fit=${fit}` : '&fit=contain'}${(fit == "cover" && position != "") ? `&position=${position}` : ''}`
+            if (q == 75)
+                url = `${images[ind].src.match(/^(.*?)(?:&|$)/)[1]}${(w != 0) ? `&w=${w}` : ''}${(h != 0) ? `&h=${h}` : ''}${(fit!="" && w!=0 && h!=0) ? `&fit=${fit}` : '&fit=contain'}${(fit == "cover" && position != "") ? `&position=${position}` : ''}${(fm != "") ? `&fm=${fm}` : ''}`
+            else
+                url = `${images[ind].src.match(/^(.*?)(?:&|$)/)[1]}${(fm != "") ? `&fm=${fm}` : ''}${(true) ? `&q=${q}` : ''}`
+
             // console.log(`${process.env.NEXT_PUBLIC_CDN_URL}=${url}`);
 
             setImages((previous: any) => {
@@ -95,12 +93,12 @@ function ModalLayout({ isOpen, onOpenChange, ind, dimensions }: any) {
                 {(onClose) => (
                     <>
                         <ModalBody>
-                            { (flag) &&
+                            {(flag) &&
                                 <div className=" flex flex-col w-full px-5 md:px-10 gap-5 ">
-                                    <SizeInput w={w} h={h} q={q} setW={setW} setH={setH} setQ={setQ} 
+                                    <SizeInput w={w} h={h} q={q} setW={setW} setH={setH} setQ={setQ}
                                         defaultH={dimensions[ind].height} defaultW={dimensions[ind].width} />
-                                    <SelectFit fit={fit} setFit={setFit} position={position} setPosition={setPosition} />
-                                </div> }
+                                    <SelectFit fit={fit} setFit={setFit} position={position} setPosition={setPosition} fm={fm} setFm={setFm} />
+                                </div>}
                         </ModalBody>
 
                         <ModalFooter>
