@@ -140,7 +140,7 @@ export default function UploadFiles() {
 
 
             <Button variant="shadow" size="lg"
-                isDisabled={isLoading || (imagePreviews.length==0)}
+                isDisabled={isLoading || (imagePreviews.length!=len)}
                 className=" bg-blue-900 shadow-black text-white font-bold tracking-wider border-white border justify-center items-center flex my-10 mx-20">
                 <Link href={"/CreateGallery"} className={` `}>
                     Click to Continue
